@@ -10,9 +10,23 @@ grid = [[2, 5, 0, 0, 3, 0, 9, 0, 1],
 	    [0, 7, 0, 0, 0, 0, 0, 0, 3],
 	    [9, 0, 3, 0, 0, 0, 6, 0, 4]]
 
+# grid = [
+#         [7,8,0,4,0,0,1,2,0],
+#         [6,0,0,0,7,5,0,0,9],
+#         [0,0,0,6,0,1,0,7,8],
+#         [0,0,7,0,4,0,2,6,0],
+#         [0,0,1,0,5,0,9,3,0],
+#         [9,0,4,0,6,0,0,0,5],
+#         [0,7,0,3,0,0,0,1,2],
+#         [1,2,0,0,0,7,4,0,0],
+#         [0,4,9,2,0,6,0,0,7]
+#     ]
 def testAndFind(grid : list, position : tuple, current : int) -> int:
     # Extract the equevalent three by three square (as a list) to the position variable
-    three_x_three = [grid[i][j] for i in range(position[0]//3) for j in range(position[1]//3)]
+    pos_x = position[0]//3
+    pos_y = position[1]//3
+    three_x_three = [grid[i][j] for i in range(pos_x*3,pos_x*3+3) for j in range(pos_y*3,pos_y*3+3)]
+    print(three_x_three)
 
     # Extract the equevalent column (as a list) to the position variable
     column = [grid[i][position[1]] for i in range(9)]
@@ -38,7 +52,9 @@ def solve(grid : list) -> list:
 
     while i < 9:
         j = 0
+        # print("i = ", i)
         while j < 9:
+            # print("j = ", j)
             if grid[i][j] == 0 or backtrack:
                 backtrack = False
                 found = testAndFind(grid, (i,j), grid[i][j]+1)
@@ -53,10 +69,13 @@ def solve(grid : list) -> list:
                     backtracking_list.append((i,j))
                     # print("backtracking list : ", backtracking_list)
                     # print(found, "position : (", i," , ", j, ")")
+            # print(grid)
                     
-            print("backtracking list : ", backtracking_list)
-            time.sleep(1.1)
+            # print("backtracking list : ", backtracking_list)
+            # time.sleep(0.3)
             j += 1
+            if j == 9 and found == 0:
+                i -= 1
 
         i += 1
     return grid
